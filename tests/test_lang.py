@@ -1,6 +1,7 @@
-import Langevin477CO as lang
 import io
 import numpy as np
+import Langevin477CO as lang
+
 
 def test_read_energy_read():
     '''Tests if the function reads and returns given an input file'''
