@@ -21,9 +21,13 @@ def read_energy(input_file):
         fx.append(data[row][3]) 
     return indx, pos, energy, fx
 
-#def start():
-#    print("LangevinCo477 start succeeded.")
+def read_coefficients(input_file):
+    data = np.loadtxt(input_file)
+    
+    temp = data[0]
+    damp = data[1]
 
+    return temp, damp
 
                 
 async def main(sv):

@@ -7,7 +7,7 @@ def test_read_energy_read():
     '''Tests if the function reads and returns given an input file'''
     test_string = '''
     #test input energy
-    #x energy 
+    #i  x   energy  fx 
     0   0   0   -2
     1   0   1   -1
     2   0   2   4
@@ -24,3 +24,16 @@ def test_read_energy_read():
     assert((np.isclose(pos, [0,0,0,0,3])).any())
     assert((np.isclose(energy,[0,1,2,4,0])).any())
     assert((np.isclose(fx, [-2,-1,4,6,1])).any())
+
+
+def test_read_coefficients_read():
+    test_string = '''
+    #Test coefficient string
+    #temp   damping     
+    273 .123
+    '''
+    test_file = io.StringIO(test_string)
+    temp, damp = lang.read_coefficients(test_file)
+
+    assert(np.isclose(temp,273))
+    assert(np.isclose(damp, .123))
