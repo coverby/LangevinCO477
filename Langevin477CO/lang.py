@@ -29,6 +29,9 @@ def read_coefficients(input_file):
 
     return temp, damp
 
+def gdist(temp,damp):
+    #Generate Gaussian distribuuted nu
+
                 
 async def main(sv):
     #create a simple energy
