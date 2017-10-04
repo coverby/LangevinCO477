@@ -37,3 +37,12 @@ def test_read_coefficients_read():
 
     assert(np.isclose(temp,273))
     assert(np.isclose(damp, .123))
+
+#def test_integrator_conserve_potential():
+    #Solvent interactions + potential = cpnserves expected potential energy
+
+#def test_integrator_conserve_KE():
+    #Considering only potential = conserved KE
+
+#def test_integrator_conserve_temp():
+    #Solvent + random + potential energy = constant T
