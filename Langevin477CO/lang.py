@@ -29,10 +29,14 @@ def read_coefficients(input_file):
 
     return temp, damp
 
-def gdist(temp,damp):
+def gdist(mean,temp,damp):
     #Generate Gaussian distribuuted nu
+    sample = []
+    var = np.multiply(np.multiply(2,temp),damp)
+    for i in range(len(mean)):
+        sample.append(np.random.normal(mean[i],var[i],1))
+    return sample 
 
-                
 async def main(sv):
     #create a simple energy
 

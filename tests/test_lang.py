@@ -39,11 +39,13 @@ def test_read_coefficients_read():
     assert(np.isclose(damp, .123))
 
 def test_temp_distribution():
-    temp = np.full(100,300)
-    damp = np.full(100,.123)
-    mean = np.zeros(100)
-    var = lang.gdist(mean,temp,damp)
-    assert(np.isclose(np.average(var),0,rtol=1.e-2))
+    nsam = 1000
+    temp = np.full(nsam,300)
+    damp = np.full(nsam,.123)
+    mean = np.zeros(nsam)
+    samples = lang.gdist(mean,temp,damp)
+    print(len(samples))
+    assert(np.absolute(np.average(samples)) <= 5)
 
 #def test_integrator_conserve_potential():
     #Solvent interactions + potential = cpnserves expected potential energy
