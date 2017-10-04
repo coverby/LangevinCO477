@@ -1,3 +1,5 @@
+![code coverage badge here](img/coverage.svg)
+
 CHE477 Langevin Project
 ====
 
