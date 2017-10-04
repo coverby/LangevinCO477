@@ -8,17 +8,19 @@ def test_read_energy_read():
     test_string = '''
     #test input energy
     #x energy 
-    0   -2
-    1   -1
-    2   0
-    3   0
-    4   3
+    0   0   0   -2
+    1   0   1   -1
+    2   0   2   4
+    3   0   4   6
+    4   3   0   1
     '''
 
     test_file = io.StringIO(test_string)
-    pos, energy = lang.read_energy(test_file)
+    indx, pos, energy, fx = lang.read_energy(test_file)
     #print(pos)
     #print(energy)
     #print((np.isclose(pos, [0,1,2,3,4])).any())
-    assert((np.isclose(pos, [0,1,2,3,4])).any())
-    assert((np.isclose(energy,[-2,-1,0,0,3])).any())
+    assert((np.isclose(indx, [0,1,2,3,4])).any())
+    assert((np.isclose(pos, [0,0,0,0,3])).any())
+    assert((np.isclose(energy,[0,1,2,4,0])).any())
+    assert((np.isclose(fx, [-2,-1,4,6,1])).any())
