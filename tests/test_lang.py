@@ -30,13 +30,15 @@ def test_read_coefficients_read():
     test_string = '''
     #Test coefficient string
     #temp   damping     
-    273 .123
+    273 .123    0.001   10
     '''
     test_file = io.StringIO(test_string)
-    temp, damp = lang.read_coefficients(test_file)
+    temp, damp, tstep, totaltime = lang.read_coefficients(test_file)
 
     assert(np.isclose(temp,273))
     assert(np.isclose(damp, .123))
+    assert(np.isclose(tstep,0.001))
+    assert(np.isclose(totaltime, 10))
 
 def test_temp_distribution():
     nsam = 1000
