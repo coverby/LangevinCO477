@@ -75,12 +75,13 @@ def test_core_integrator_setup():
 
 def test_integrator_conserve_potential():
     #Solvent interactions + potential = conserves expected potential energy
+    #With no energy input from random fluctuations, we expect total energy to decay to 0
     xi = 1
     vi = 1
     ui = 1
     fi = 1
     la = 0.7
-    temp = 0
+    temp = 0 #Basically disables the random inputs (var => 0)
     mass = 1
     tstep = .001
     totaltime = 200
@@ -94,11 +95,12 @@ def test_integrator_conserve_potential():
 
 def test_integrator_conserve_KE():
     #Considering only potential = conserved KE
+    #Without any solvent interactions or thermal input, the integrator must conserve total energy
     xi = 1
     vi = 1
     ui = 1
     fi = 1
-    la = 0
+    la = 0 #Disables both solvent interactions (no drag) and random inputs (var => 0)
     temp = 300
     mass = 1
     tstep = .001
