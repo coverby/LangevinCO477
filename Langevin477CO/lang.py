@@ -39,6 +39,7 @@ def gdist(mean,temp,damp):
     return sample 
 
 def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
+    #Core integrator using Velocity Verlet algorithm for Langevin equation
     totalsteps = int(np.floor(totaltime/tstep))
     assert(totalsteps > 2) #Check that we actually at least 2 time points
     xpos = np.zeros(totalsteps)
@@ -54,18 +55,18 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
     sample = gdist(time, temp, la)
     time[1] = tstep
 
-    #Create timestep one for the Verlet Velocity Algorithm
+    #Create timestep one for the Velocity Verlet Algorithm
     #x(t+dt) = x + v(t)*dt + 1/2*a(t)*dt^2
     #a(t+dt) from x(t+dt) using interaction potential
     #v(t+dt) = v(t) + (a(t) + a(t+dt))/2*dt
 
-    xpos[1] = xpos[0] + vel[0]*tstep #+ .5*accel[0]*tstep**2
+    xpos[1] = xpos[0] + vel[0]*tstep
     potential[1] = .5*kcoeff*xpos[1]**2
     accel[1] = (-la*vel[0] + sample[1]*tstep - 2*potential[1]/xpos[1])/mass
     vel[1] = vel[0] + (accel[0] + accel[1])*.5*tstep
 
 
-    #Using the Verlet Velocity integrator
+    #Using the Velocity Verlet integration algorithm
     #Calculate new intermediate velocity, v(t+dt/2) = v + 1/2*a*dt
     #Calculate new position, x(t+dt) = x + v(t+dt/2)*dt
     #Calculate new acceleration from interaction potential
@@ -75,7 +76,7 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
 
     for i in range(2,totalsteps):
         velint = vel[i-1] + .5*accel[i-1]*tstep
-        xpos[i] = xpos[i-1] + velint*tstep #+ .5*accel[i-1]*tstep**2
+        xpos[i] = xpos[i-1] + velint*tstep
 
         potential[i] = .5*kcoeff*xpos[i]**2
         accel[i] = (-la*velint + sample[i]*tstep - kcoeff*xpos[i])/mass
@@ -100,10 +101,13 @@ async def main(sv): #pragma: no cover
         await asyncio.sleep(0.5)
 
 
-
 def start(): #pragma: no cover
-    sv = SimVis()
-    start_server(sv)
-    asyncio.ensure_future(main(sv))
-    loop = asyncio.get_event_loop()
-    loop.run_forever()
+    posfile = input("Please enter the name of the file containing particle position information:")
+    parafile = input("Please enter the name of the file containing parameter information: ")
+
+#def start(): #pragma: no cover
+#    sv = SimVis()
+#    start_server(sv)
+#    asyncio.ensure_future(main(sv))
+#    loop = asyncio.get_event_loop()
+#    loop.run_forever()
