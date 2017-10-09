@@ -2,3 +2,4 @@
 from .lang import read_energy
 from .lang import read_coefficients
 from .lang import gdist
+from .lang import core_integrator
