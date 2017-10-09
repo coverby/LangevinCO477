@@ -38,6 +38,19 @@ def gdist(mean,temp,damp):
         sample.append(np.random.normal(mean[i],var,1))
     return sample 
 
+def write_output(idx, time, pos, vel, outname):
+    #Write the output file containing index, time, position, and velocity of particles
+    assert((len(idx) == len(time)) == (len(pos) == len(vel)))
+    header_string = "#Index  Time    Position    Velocity"
+    outfile = open(outname, "w")
+    outfile.write(header_string)
+    outfile.write("\n")
+    for i in range(len(idx)):
+        outfile.write("\t".join( (str(idx[i]), str(time[i]), str(pos[i]), str(vel[i])) ))
+        outfile.write("\n")
+    outfile.close()
+    
+
 def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
     #Core integrator using Velocity Verlet algorithm for Langevin equation
     totalsteps = int(np.floor(totaltime/tstep))

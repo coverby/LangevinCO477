@@ -1,6 +1,7 @@
 import io
 import numpy as np
 import Langevin477CO as lang
+import os
 
 
 def test_read_energy_read():
@@ -29,7 +30,7 @@ def test_read_energy_read():
 def test_read_coefficients_read():
     test_string = '''
     #Test coefficient string
-    #temp   damping     
+    #temp   damping    tstep    totaltime 
     273 .123    0.001   10
     '''
     test_file = io.StringIO(test_string)
@@ -39,6 +40,20 @@ def test_read_coefficients_read():
     assert(np.isclose(damp, .123))
     assert(np.isclose(tstep,0.001))
     assert(np.isclose(totaltime, 10))
+
+def test_write_output():
+    test_data = [[1,10.0,-.432,.234],[2,10.0,123,456]]
+    test_idx = [1, 2]
+    test_time = [10.0, 10.0]
+    test_pos = [-.432, 123]
+    test_vel = [.234, 456]
+    fname = "writetest.txt"
+    lang.write_output(test_idx,test_time,test_pos,test_vel,fname)
+
+    file_data = np.loadtxt(fname)
+    assert(np.isclose(file_data, test_data).any())
+    os.remove(fname)
+
 
 def test_temp_distribution():
     nsam = 1000
