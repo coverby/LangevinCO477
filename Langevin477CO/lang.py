@@ -4,8 +4,7 @@ import io
 import asyncio
 
 def read_energy(input_file):
-    #datafile = io.StringIO(input_file)
-    #print(input_file.getvalue())
+    #Get the index, position, energy, and force from the position/energy file
     indx = []
     pos = []
     energy = []
@@ -23,6 +22,7 @@ def read_energy(input_file):
 
 
 def read_coefficients(input_file):
+    #Get the temperature, damping coefficient, tstep, and total integration time from file
     data = np.loadtxt(input_file)
     
     temp = data[0]
@@ -33,7 +33,7 @@ def read_coefficients(input_file):
 
 
 def gdist(mean,temp,damp):
-    #Generate Gaussian distribuuted nu
+    #Generate Gaussian distributed eta for thermal disturbance
     sample = []
     var = np.multiply(np.multiply(2,temp),damp)
     for i in range(len(mean)):
@@ -135,9 +135,6 @@ def main_handler(posfile, parafile, mass, vel, outfile, olength):
         
     write_output(idxout,timeout,posout,velout,outfile)
 
-    
-
-
 def start(): #pragma: no cover
     sv = SimVis()
     print("This is a Langevin integrator utilizing the Verlet algorithm.")
@@ -149,23 +146,3 @@ def start(): #pragma: no cover
     outfile = input("Enter the name of the output file: ")
     olength = int(input("Enter how many timesteps for each particle you want in the output (enter 0 for all): "))
     main_handler(posfile, parafile, mass, velocity, outfile, olength)
-
-#def start(): #pragma: no cover
-#    sv = SimVis()
-#    start_server(sv)
-#    asyncio.ensure_future(main(sv))
-#    loop = asyncio.get_event_loop()
-#    loop.run_forever()
-
-#async def main(sv): #pragma: no cover
-#    #create a simple energy
-#
-#    x = np.linspace(-1, 1, 100)
-#    y = x**2
-#    sv.set_energy(x, y)
-#
-#
-#
-#    while True:
-#        sv.set_position(np.random.random(1))
-#        await asyncio.sleep(0.5)

@@ -3,7 +3,6 @@ import numpy as np
 import Langevin477CO as lang
 import os
 
-
 def test_read_energy_read():
     '''Tests if the function reads and returns given an input file'''
     test_string = '''
@@ -85,6 +84,7 @@ def test_main_handler():
     os.remove(outfile)
 
 def test_temp_distribution():
+    #Test to make sure that we have a distribution with the right mean
     nsam = 1000
     temp = 300
     damp = .123
@@ -100,6 +100,7 @@ def test_temp_distribution():
         assert(newavg <= 15)
 
 def test_core_integrator_setup():
+    #Test that the integrator can be loaded and outputs in the expected format
     xi = 1
     vi = 1
     ui = 1
@@ -115,7 +116,7 @@ def test_core_integrator_setup():
     assert(len(output) == 5)
     print("Length of each output: ")
     print(len(output[0]))
-    assert(len(output[0]) == int(np.floor(totaltime/tstep) ))
+    assert(len(output[0]) == int(np.floor(totaltime/tstep)+1 ))
 
 def test_integrator_conserve_potential():
     #Solvent interactions + potential = conserves expected potential energy
@@ -162,6 +163,3 @@ def test_integrator_conserve_KE():
     print(np.average(output[3]) + avgKE)
 
     assert(np.isclose(np.average(output[3] + avgKE),(ui+.5*mass*vi**2),rtol=1.e-2))
-
-#def test_integrator_conserve_temp():
-   #Solvent + random + potential energy = constant T
