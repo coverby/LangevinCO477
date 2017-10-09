@@ -55,7 +55,7 @@ def write_output(idx, time, pos, vel, outname):
 
 def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
     #Core integrator using Velocity Verlet algorithm for Langevin equation
-    totalsteps = int(np.floor(totaltime/tstep))
+    totalsteps = int(np.floor(totaltime/tstep)) + 1
     assert(totalsteps > 2) #Check that we actually at least 2 time points
     xpos = np.zeros(totalsteps)
     accel = np.zeros(totalsteps)
