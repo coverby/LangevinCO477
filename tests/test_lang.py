@@ -56,7 +56,7 @@ def test_write_output():
     os.remove(fname)
 
 def test_main_handler():
-    #Test the main handler function
+    #Test the main handler function's ability to coordinate output file format
     posstring = '''
     #test input energy
     #i  x   energy  fx 
