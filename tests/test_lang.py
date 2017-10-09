@@ -42,6 +42,7 @@ def test_read_coefficients_read():
     assert(np.isclose(totaltime, 10))
 
 def test_write_output():
+    #Test the ability to write correctly formatted output text files.
     test_data = [[1,10.0,-.432,.234],[2,10.0,123,456]]
     test_idx = [1, 2]
     test_time = [10.0, 10.0]
@@ -54,6 +55,32 @@ def test_write_output():
     assert(np.isclose(file_data, test_data).any())
     os.remove(fname)
 
+def test_main_handler():
+    #Test the main handler function
+    posstring = '''
+    #test input energy
+    #i  x   energy  fx 
+    0   0   0.1   -2
+    1   0.1   1   -1
+    2   0.2   2   4
+    3   -2   4   6
+    4   3   0   1
+    '''
+    parastring = '''
+    #Test coefficient string
+    #temp   damping    tstep    totaltime 
+    273 .123    0.01   10
+    '''
+    mass = 1
+    vel = 1
+    olength = 3
+    posfile = io.StringIO(posstring)
+    parafile = io.StringIO(parastring)
+    outfile = "handlertestout.txt"
+    lang.main_handler(posfile, parafile, mass, vel, outfile, olength)
+    
+    file_data = np.loadtxt(outfile)
+    assert(1==0)
 
 def test_temp_distribution():
     nsam = 1000

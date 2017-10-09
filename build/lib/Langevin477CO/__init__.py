@@ -4,5 +4,5 @@ from .lang import read_coefficients
 from .lang import gdist
 from .lang import write_output
 from .lang import core_integrator
-from .lang import main_handler
+from .lang import main_hanlder
 from .lang import start

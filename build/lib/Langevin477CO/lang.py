@@ -66,14 +66,7 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
     accel[0] = fi/mass
     vel[0] = vi
     potential[0] = ui
-    try: #An edge case here is if the position is exactly zero at the start
-        kcoeff = potential[0]*2/(xpos[0]**2)
-    except ZeroDivisionError:
-        if np.isclose(0,potential[0]):
-            kcoeff = 0 #Kind of a cludge, but garbage in garbage out
-        else:
-            kcoeff = potential[0]/(.001) #Also very much a cludge
-
+    kcoeff = potential[0]*2/(xpos[0]**2)
     sample = gdist(time, temp, la)
     time[1] = tstep
 
@@ -108,47 +101,19 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
 
     return xpos, accel, vel, potential, time
 
-def main_handler(posfile, parafile, mass, vel, outfile, olength):
+def main_handler(posfile, parafile, mass, outfile, olength):
     #This function coordinates the other components after initialization
-    idx, pos, energy, force = read_energy(posfile)
-    temp, damp, tstep, totaltime = read_coefficients(parafile)
 
-    idxout = []
-    
-    posout = []
-    aclout = []
-    velout = []
-    potout = []
-    timeout = []
-
-    assert(olength<=int(np.floor(totaltime/tstep))), "Desired output length longer than expected time steps!"
-
-    for i in range(len(idx)):
-        output = core_integrator(pos[i],vel,energy[i],force[i],damp,temp,mass,tstep,totaltime)
-
-        idxout.extend(np.multiply(np.ones(olength),idx[i]))
-        posout.extend(output[0][-olength:])
-        aclout.extend(output[1][-olength:])
-        velout.extend(output[2][-olength:])
-        potout.extend(output[3][-olength:])
-        timeout.extend(output[4][-olength:])
-        
-    write_output(idxout,timeout,posout,velout,outfile)
-
-    
-
-
-def start(): #pragma: no cover
-    sv = SimVis()
+def start():  #pragma: no cover
     print("This is a Langevin integrator utilizing the Verlet algorithm.")
-    posfile = input("Enter the name of the file containing particle position information (format specified in readme): ")
-    parafile = input("Enter the name of the file containing parameter information (format in readme): ")
-    mass = float(input("Enter the particle mass: "))
+    posfile = input("Enter the name of the file containing particle position information: ")
+    parafile = input("Enter the name of the file containing parameter information: ")
+    mass = input("Enter the particle mass: ")
     assert(mass > 0), "Mass must be a positive, non-zero value!"
-    velocity = float(input("Enter particle velocity: "))
     outfile = input("Enter the name of the output file: ")
-    olength = int(input("Enter how many timesteps for each particle you want in the output (enter 0 for all): "))
-    main_handler(posfile, parafile, mass, velocity, outfile, olength)
+    olength = input("Enter how many timesteps for each particle you want in the output (enter 0 for all): ")
+    assert(int(olength)), "Enter an integer for output length"
+    main_handler(posfile, parafile, mass, outfile, olength)
 
 #def start(): #pragma: no cover
 #    sv = SimVis()
