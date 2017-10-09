@@ -60,7 +60,7 @@ def test_main_handler():
     posstring = '''
     #test input energy
     #i  x   energy  fx 
-    0   0   0.1   -2
+    0   0.1   0.1   -2
     1   0.1   1   -1
     2   0.2   2   4
     3   -2   4   6
@@ -80,7 +80,9 @@ def test_main_handler():
     lang.main_handler(posfile, parafile, mass, vel, outfile, olength)
     
     file_data = np.loadtxt(outfile)
-    assert(1==0)
+    assert(len(file_data) == 15)
+    assert(file_data[14][0] == 4)
+    os.remove(outfile)
 
 def test_temp_distribution():
     nsam = 1000
