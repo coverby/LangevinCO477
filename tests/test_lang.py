@@ -79,17 +79,18 @@ def test_integrator_conserve_potential():
     vi = 1
     ui = 1
     fi = 1
-    la = 0.123
+    la = 0.7
     temp = 0
     mass = 1
     tstep = .001
-    totaltime = 100
+    totaltime = 200
     output = lang.core_integrator(xi,vi,ui,fi,la,temp,mass,tstep,totaltime)
+    #output is xpos, accel, velocity, potential energy, and time
     print("Potential energy format looks like:")
     print(output[3])
     print("Average potential energy over time looks like:")
     print(np.average(output[3]))
-    assert(np.isclose(np.average(output[3]),0))
+    assert(np.isclose(np.average(output[3]),0,atol=1.e-2))
 
 def test_integrator_conserve_KE():
     #Considering only potential = conserved KE
@@ -101,17 +102,20 @@ def test_integrator_conserve_KE():
     temp = 300
     mass = 1
     tstep = .001
-    totaltime = 100
+    totaltime = 200
     output = lang.core_integrator(xi,vi,ui,fi,la,temp,mass,tstep,totaltime)
-    print("Potential energy format looks like:")
-    print(output[3])
-    print("Average potential energy over time looks like:")
-    print(np.average(output[3]))
-    print("Position format looks like:")
-    print(output[0])
-    print("Average position over time looks like:")
-    print(np.average(output[0]))
-    assert(np.isclose(np.average(output[3]),ui))
+    #output is xpos, accel, velocity, potential energy, and time
+    # avgKE = .5*mass*vel^2
+    sum = 0
+    for i in range(len(output[2])):
+        sum += .5*mass*output[2][i]**2
+    avgKE = sum/len(output[2])
+    print("Initial KE:")
+    print(ui+.5*mass*vi**2)
+    print("Average kinetic energy over time looks like:")
+    print(np.average(output[3]) + avgKE)
+
+    assert(np.isclose(np.average(output[3] + avgKE),(ui+.5*mass*vi**2),rtol=1.e-2))
 
 #def test_integrator_conserve_temp():
    #Solvent + random + potential energy = constant T

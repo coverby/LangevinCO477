@@ -61,7 +61,7 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
 
     xpos[1] = xpos[0] + vel[0]*tstep #+ .5*accel[0]*tstep**2
     potential[1] = .5*kcoeff*xpos[1]**2
-    accel[1] = (-la*vel[0] + sample[0]*tstep - 2*potential[1]/xpos[1])/mass
+    accel[1] = (-la*vel[0] + sample[1]*tstep - 2*potential[1]/xpos[1])/mass
     vel[1] = vel[0] + (accel[0] + accel[1])*.5*tstep
 
 
@@ -78,7 +78,7 @@ def core_integrator(xi, vi, ui, fi, la, temp, mass, tstep, totaltime):
         xpos[i] = xpos[i-1] + velint*tstep #+ .5*accel[i-1]*tstep**2
 
         potential[i] = .5*kcoeff*xpos[i]**2
-        accel[i] = (-la*velint + sample[i-1]*tstep - 2*potential[i]/xpos[i])/mass
+        accel[i] = (-la*velint + sample[i]*tstep - kcoeff*xpos[i])/mass
 
         vel[i] = velint + .5*accel[i]*tstep
         time[i] = time[i-1] + tstep
